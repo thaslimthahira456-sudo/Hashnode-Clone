@@ -1,0 +1,13 @@
+const express=require("express"), cors=require("cors"), dotenv=require("dotenv");
+const connectDB=require("./config/db");
+dotenv.config();
+const app=express();
+app.use(cors({origin:process.env.CLIENT_URL||"http://localhost:5173"}));
+app.use(express.json({limit:"2mb"}));
+app.get("/",(_req,res)=>res.json({message:"Hashnode Clone API is running"}));
+app.get("/api/health",(_req,res)=>res.json({ok:true}));
+app.use("/api/auth",require("./routes/authRoutes"));
+app.use("/api/posts",require("./routes/postRoutes"));
+app.use("/api/users",require("./routes/userRoutes"));
+const PORT=process.env.PORT||5000;
+(async()=>{try{await connectDB();app.listen(PORT,()=>console.log(`Server running on port ${PORT}`));}catch(e){console.error("Unable to start server:",e.message);process.exit(1);}})();

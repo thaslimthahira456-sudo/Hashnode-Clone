@@ -1,0 +1,1 @@
+const r=require("express").Router(),{getUserProfile}=require("../controllers/userController");r.get("/:id",getUserProfile);module.exports=r;
